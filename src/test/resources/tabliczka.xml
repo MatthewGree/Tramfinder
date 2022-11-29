@@ -1,0 +1,397 @@
+<tabliczka id="1" mc="0">
+<dzien nazwa="w dni robocze">
+    <godz h="4">
+        <min m="45">
+        </min>
+    </godz>
+    <godz h="5">
+        <min m="15">
+        </min>
+        <min m="40">
+        </min>
+        <min m="55">
+        </min>
+    </godz>
+    <godz h="6">
+        <min m="08">
+        </min>
+        <min m="18">
+        </min>
+        <min m="33">
+
+        </min>
+        <min m="48">
+        </min>
+    </godz>
+    <godz h="7">
+        <min m="02">
+        </min>
+        <min m="17">
+        </min>
+        <min m="34">
+        </min>
+        <min m="50">
+        </min>
+    </godz>
+    <godz h="8">
+        <min m="05">
+        </min>
+        <min m="20">
+        </min>
+        <min m="35">
+        </min>
+        <min m="50">
+        </min>
+    </godz>
+    <godz h="9">
+        <min m="00">
+        </min>
+        <min m="15">
+        </min>
+        <min m="27">
+        </min>
+        <min m="42">
+        </min>
+        <min m="57">
+        </min>
+    </godz>
+    <godz h="10">
+        <min m="12">
+        </min>
+        <min m="27">
+        </min>
+        <min m="42">
+        </min>
+        <min m="57">
+        </min>
+    </godz>
+    <godz h="11">
+        <min m="12">
+        </min>
+        <min m="27">
+        </min>
+        <min m="42">
+        </min>
+        <min m="57">
+        </min>
+    </godz>
+    <godz h="12">
+        <min m="12">
+        </min>
+        <min m="27">
+        </min>
+        <min m="42">
+        </min>
+        <min m="57">
+        </min>
+    </godz>
+    <godz h="13">
+        <min m="12">
+        </min>
+        <min m="27">
+        </min>
+        <min m="42">
+        </min>
+        <min m="59">
+        </min>
+    </godz>
+    <godz h="14">
+        <min m="14">
+        </min>
+        <min m="33">
+        </min>
+        <min m="48">
+        </min>
+    </godz>
+    <godz h="15">
+        <min m="03">
+        </min>
+        <min m="18">
+        </min>
+        <min m="33">
+        </min>
+        <min m="48">
+        </min>
+    </godz>
+    <godz h="16">
+        <min m="03">
+        </min>
+        <min m="18">
+        </min>
+        <min m="33">
+        </min>
+        <min m="48">
+        </min>
+    </godz>
+    <godz h="17">
+        <min m="03">
+        </min>
+        <min m="18">
+        </min>
+        <min m="33">
+        </min>
+        <min m="48">
+        </min>
+    </godz>
+    <godz h="18">
+        <min m="03">
+        </min>
+        <min m="18">
+        </min>
+        <min m="30" ozn="Z" przyp="Z -  zjazd do zajezdni przy ul. Obornickiej (do przyst. pl. Daniłowskiego po trasie)">
+        </min>
+        <min m="45">
+        </min>
+    </godz>
+    <godz h="19">
+        <min m="10">
+        </min>
+        <min m="40">
+        </min>
+    </godz>
+    <godz h="20">
+        <min m="00">
+        </min>
+        <min m="30">
+        </min>
+    </godz>
+    <godz h="21">
+        <min m="00">
+        </min>
+        <min m="30">
+        </min>
+    </godz>
+    <godz h="22">
+        <min m="00">
+        </min>
+        <min m="19" ozn="R" przyp="R -  kurs do Sołtysowic (do przyst. Czajkowskiego po trasie)">
+        </min>
+        <min m="34" ozn="Z" przyp="Z -  zjazd do zajezdni przy ul. Obornickiej (do przyst. pl. Daniłowskiego po trasie)">
+        </min>
+    </godz>
+</dzien>
+<dzien nazwa="Sobota">
+<godz h="5">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="6">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="7">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="8">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="9">
+    <min m="08">
+    </min>
+    <min m="29">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="10">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="11">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="12">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="13">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="14">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="15">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="16">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="17">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="18">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="19">
+    <min m="25">
+    </min>
+</godz>
+<godz h="20">
+    <min m="00">
+    </min>
+    <min m="30">
+    </min>
+</godz>
+<godz h="21">
+    <min m="00">
+    </min>
+    <min m="30">
+    </min>
+</godz>
+<godz h="22">
+    <min m="00">
+    </min>
+    <min m="19" ozn="R" przyp="R -  kurs do Sołtysowic (do przyst. Czajkowskiego po trasie)">
+    </min>
+    <min m="34" ozn="Z" przyp="Z -  zjazd do zajezdni przy ul. Obornickiej (do przyst. pl. Daniłowskiego po trasie)">
+    </min>
+</godz>
+</dzien>
+<dzien nazwa="Niedziela">
+<godz h="5">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="6">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="7">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="8">
+    <min m="08">
+    </min>
+    <min m="38">
+    </min>
+</godz>
+<godz h="9">
+    <min m="08">
+    </min>
+    <min m="29">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="10">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="11">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="12">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="13">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="14">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="15">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="16">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="17">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="18">
+    <min m="25">
+    </min>
+    <min m="55">
+    </min>
+</godz>
+<godz h="19">
+    <min m="25">
+    </min>
+</godz>
+<godz h="20">
+    <min m="00">
+    </min>
+    <min m="30">
+    </min>
+</godz>
+<godz h="21">
+    <min m="00">
+    </min>
+    <min m="30">
+    </min>
+</godz>
+<godz h="22">
+    <min m="00">
+    </min>
+    <min m="19" ozn="R" przyp="R -  kurs do Sołtysowic (do przyst. Czajkowskiego po trasie)">
+    </min>
+    <min m="34" ozn="Z" przyp="Z -  zjazd do zajezdni przy ul. Obornickiej (do przyst. pl. Daniłowskiego po trasie)">
+    </min>
+</godz>
+</dzien>
+</tabliczka>

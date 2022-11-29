@@ -1,0 +1,420 @@
+<przystanek id="16514" nazwa="Sowia" ulica="Sowia" cechy="">
+    <czasy>
+        <przystanek numer="0" id="16514" nazwa="Sowia" czas="0"/>
+        <przystanek numer="1" id="11310" nazwa="KRZYKI" czas="2"/>
+    </czasy>
+    <tabliczka id="64" mc="1" cechy="NZ">
+        <dzien nazwa="w dni robocze">
+            <godz h="4">
+                <min m="38">
+                </min>
+            </godz>
+            <godz h="5">
+                <min m="08">
+                </min>
+                <min m="31">
+                </min>
+                <min m="46">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="6">
+                <min m="07">
+                </min>
+                <min m="11">
+                </min>
+                <min m="27">
+                </min>
+                <min m="43">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="7">
+                <min m="12">
+                </min>
+                <min m="27">
+                </min>
+                <min m="42">
+                </min>
+                <min m="58">
+                </min>
+            </godz>
+            <godz h="8">
+                <min m="13">
+                </min>
+                <min m="28">
+                </min>
+                <min m="43">
+                </min>
+                <min m="58">
+                </min>
+            </godz>
+            <godz h="9">
+                <min m="13">
+                </min>
+                <min m="23">
+                </min>
+                <min m="32">
+                </min>
+                <min m="44">
+                </min>
+                <min m="58">
+                </min>
+            </godz>
+            <godz h="10">
+                <min m="17">
+                </min>
+                <min m="32">
+                </min>
+                <min m="47">
+                </min>
+            </godz>
+            <godz h="11">
+                <min m="02">
+                </min>
+                <min m="17">
+                </min>
+                <min m="32">
+                </min>
+                <min m="47">
+                </min>
+            </godz>
+            <godz h="12">
+                <min m="02">
+                </min>
+                <min m="17">
+                </min>
+                <min m="32">
+                </min>
+                <min m="47">
+                </min>
+            </godz>
+            <godz h="13">
+                <min m="02">
+                </min>
+                <min m="17">
+                </min>
+                <min m="32">
+                </min>
+                <min m="47">
+                </min>
+            </godz>
+            <godz h="14">
+                <min m="02">
+                </min>
+                <min m="16">
+                </min>
+                <min m="31">
+                </min>
+                <min m="46">
+                </min>
+            </godz>
+            <godz h="15">
+                <min m="01">
+                </min>
+                <min m="15">
+                </min>
+                <min m="29">
+                </min>
+                <min m="44">
+                </min>
+            </godz>
+            <godz h="16">
+                <min m="00">
+                </min>
+                <min m="15">
+                </min>
+                <min m="30">
+                </min>
+                <min m="45">
+                </min>
+            </godz>
+            <godz h="17">
+                <min m="00">
+                </min>
+                <min m="15">
+                </min>
+                <min m="29">
+                </min>
+                <min m="43">
+                </min>
+                <min m="53">
+                </min>
+            </godz>
+            <godz h="18">
+                <min m="09">
+                </min>
+                <min m="24">
+                </min>
+                <min m="54">
+                </min>
+            </godz>
+            <godz h="19">
+                <min m="31">
+                </min>
+            </godz>
+            <godz h="20">
+                <min m="01">
+                </min>
+                <min m="25">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="21">
+                <min m="29">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="22">
+                <min m="29">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="23">
+                <min m="21">
+                </min>
+            </godz>
+        </dzien>
+        <dzien nazwa="Sobota">
+            <godz h="5">
+                <min m="01">
+                </min>
+                <min m="31">
+                </min>
+            </godz>
+            <godz h="6">
+                <min m="01">
+                </min>
+                <min m="31">
+                </min>
+                <min m="37">
+                </min>
+            </godz>
+            <godz h="7">
+                <min m="07">
+                </min>
+                <min m="37">
+                </min>
+            </godz>
+            <godz h="8">
+                <min m="07">
+                </min>
+                <min m="37">
+                </min>
+            </godz>
+            <godz h="9">
+                <min m="07">
+                </min>
+                <min m="33">
+                </min>
+                <min m="56">
+                </min>
+            </godz>
+            <godz h="10">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="11">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="12">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="13">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="14">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="15">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="16">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="17">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="18">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="19">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="20">
+                <min m="26">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="21">
+                <min m="29">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="22">
+                <min m="29">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="23">
+                <min m="21">
+                </min>
+            </godz>
+        </dzien>
+        <dzien nazwa="Niedziela">
+            <godz h="5">
+                <min m="01">
+                </min>
+                <min m="31">
+                </min>
+            </godz>
+            <godz h="6">
+                <min m="01">
+                </min>
+                <min m="31">
+                </min>
+                <min m="37">
+                </min>
+            </godz>
+            <godz h="7">
+                <min m="07">
+                </min>
+                <min m="37">
+                </min>
+            </godz>
+            <godz h="8">
+                <min m="07">
+                </min>
+                <min m="37">
+                </min>
+            </godz>
+            <godz h="9">
+                <min m="07">
+                </min>
+                <min m="33">
+                </min>
+                <min m="56">
+                </min>
+            </godz>
+            <godz h="10">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="11">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="12">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="13">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="14">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="15">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="16">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="17">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="18">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="19">
+                <min m="27">
+                </min>
+                <min m="57">
+                </min>
+            </godz>
+            <godz h="20">
+                <min m="26">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="21">
+                <min m="29">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="22">
+                <min m="29">
+                </min>
+                <min m="59">
+                </min>
+            </godz>
+            <godz h="23">
+                <min m="21">
+                </min>
+            </godz>
+        </dzien>
+    </tabliczka>
+</przystanek>
