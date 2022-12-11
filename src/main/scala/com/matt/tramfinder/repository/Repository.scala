@@ -2,11 +2,13 @@ package com.matt.tramfinder.repository
 
 import cats.implicits.toTraverseOps
 import com.lucidchart.open.xtract.{ParseError, XmlReader}
+import com.matt.tramfinder.model.ModelXmlReaders.dataFileReader
 import com.matt.tramfinder.model.{DataFile, Line}
-import com.matt.tramfinder.model.ModelXmlReaders.{dataFileReader}
 
+import java.io.File
 import scala.collection.immutable.HashMap
-import scala.xml.Elem
+import scala.util.chaining.scalaUtilChainingOps
+import scala.xml.{Elem, XML}
 
 class Repository(private val db: Map[String, Line]) {
   def getLine(name: String): Option[Line] =
@@ -26,6 +28,15 @@ object Repository {
       .map(_.foldLeft(HashMap.empty[String, Line])((db, line) => db + (line.name -> line)))
       .map(new Repository(_))
       .fold[Either[Seq[ParseError], Repository]](Left(_))(Right(_))
+
+  def loadFromPath(pathName: String): Either[Seq[ParseError], Repository] = {
+    new File(pathName)
+      .listFiles
+      .toList
+      .map(XML.loadFile)
+      .pipe(Repository.loadFromXml)
+  }
+
 
   def empty: Repository =
     new Repository(HashMap.empty)
