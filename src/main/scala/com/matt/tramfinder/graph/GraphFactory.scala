@@ -1,25 +1,33 @@
 package com.matt.tramfinder.graph
 
-import com.matt.tramfinder.model.{Line, Stop}
+import com.matt.tramfinder.logging.Logging
+import com.matt.tramfinder.model.{Destination, Line, Stop}
 
 import scala.collection.immutable.HashMap
 import scala.util.chaining.scalaUtilChainingOps
 
-object GraphFactory {
+object GraphFactory extends Logging{
 
-  private def createEdgesFromStop(nodeMap: HashMap[Int, TramStop], stop: Stop, lineId: LineId): Seq[Edge] =
-    stop.board.map(_.days.map(_.toDayTimes).zip(stop.times).flatMap { case (dayTimes, dest) =>
-      dayTimes.map(dayTime => Edge(nodeMap(dest.id), EdgeInfo(dest.time, dayTime.time + dest.time, dayTime.day, lineId)))
-    }).getOrElse(Seq.empty)
+  private def createEdgesFromStop(nodeMap: HashMap[Int, TramStop], stop: Stop, lineId: LineId): Iterable[(Destination, Edge)] = {
+    logger.info(s"Creating edges from stop ${(stop.id, stop.name)}")
+    for {
+      board <- stop.board.toList
+      day <- board.days
+      dayTime <- day.toDayTimes
+      List(start, target) <- stop.times.sliding(2)
+    } yield (start, Edge(nodeMap(target.id), EdgeInfo(target.time - start.time, dayTime.time + start.time, dayTime.day, lineId)))
+  }
 
-  private def createEdges(nodeMap: HashMap[Int, TramStop], lines: Iterable[Line]): Map[Int, Seq[Edge]] =
-    lines.flatMap(line =>
-      line.variances.flatMap(variance =>
-        variance.stops.map(
-          stop => stop.id -> createEdgesFromStop(nodeMap, stop, LineId(line.name, variance.id))
-        )
-      )
-    ).toMap
+  private def createEdges(nodeMap: HashMap[Int, TramStop], lines: Iterable[Line]): Map[Int, Iterable[Edge]] = {
+    (for {
+      line <- lines
+      variance <- line.variances
+      stop <- variance.stops
+    } yield createEdgesFromStop(nodeMap, stop, LineId(line.name, variance.id)))
+      .flatten
+      .groupBy { case (stop, _) => stop.id }
+      .view.mapValues(_.map { case (_, edge) => edge }).toMap
+  }
 
 
   def fromLines(lines: Iterable[Line]): Graph = {
@@ -35,25 +43,19 @@ object GraphFactory {
   }
 
   private def getStops(lines: Iterable[Line]): Iterable[TramStop] =
-    lines
-      .flatMap(
-        _.variances.flatMap(
-          _.stops.map(stop => TramStop(stop.id, stop.name))
-        )
-      )
+    for {
+      line <- lines
+      variance <- line.variances
+      stop <- variance.stops
+    } yield TramStop(stop.id, stop.name)
+
 
   private def getMissingStopsFromDestinations(lines: Iterable[Line], map: Map[Int, _]): Iterable[TramStop] =
-    lines.flatMap(
-      _.variances.flatMap(
-        _.stops.flatMap(
-          _.times.map(
-            dest => if (map.contains(dest.id)) {
-              None
-            } else {
-              Some(TramStop(dest.id, dest.name))
-            }
-          )
-        )
-      )
-    ).flatten
+    (for {
+      line <- lines
+      variance <- line.variances
+      stop <- variance.stops
+      dest <- stop.times
+    } yield if (map.contains(dest.id)) None else Some(TramStop(dest.id, dest.name))).flatten
+
 }
