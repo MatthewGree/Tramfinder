@@ -6,10 +6,14 @@ import com.matt.tramfinder.model.Time
 import java.time.Instant
 
 trait RouteFinder {
-  def findBestRoute(graph: Graph, start: Int, end: Int, time: Instant): Either[RouteError, List[Connection]]
+  def findBestRoute(graph: Graph, start: Int, end: Int, time: Instant): Either[RouteError, Route]
 }
 
+case class Duration(hour: Int, minutes: Int)
+
 case class Connection(from: Node, to: Node, startingTime: Time, endingTime: Time, line: LineId)
+
+case class Route(connections: List[Connection], duration: Duration)
 
 sealed trait RouteError {
   def errorMessage: String

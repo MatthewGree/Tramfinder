@@ -1,5 +1,6 @@
 package com.matt.tramfinder.model
 
+import com.matt.tramfinder.graph.routefinder.Duration
 import com.matt.tramfinder.model.DayType.DayType
 
 object DayType extends Enumeration {
@@ -16,30 +17,47 @@ object DayType extends Enumeration {
 private[model] case class IntermediateTime(hour: Int, minutes: Seq[Int])
 
 case class Time(hour: Int, minutes: Int) {
-  def +(minutes: Int): Time =
-    {
-      val addedMinutes = minutes % 60
-      val addedHours = minutes / 60
-      var newMinutes = minutes + addedMinutes
-      var newHours = hour + addedHours
-      while (newMinutes >= 60) {
-        newMinutes -= 60
-        newHours += 1
-      }
-      while (newHours >= 24) {
-        newHours -= 24
-      }
-      Time(newHours, newMinutes)
-    }
+  lazy val toMinutes: Int = hour * 60 + minutes
 
-  def ++(hours: Int): Time =
-    {
-      var newHours = hour + hours
-      while (newHours >= 24) {
-        newHours -= 24
-      }
-      Time(newHours, this.minutes)
+
+  def +(minutes: Int): Time = {
+    val addedMinutes = minutes % 60
+    val addedHours = minutes / 60
+    var newMinutes = this.minutes + addedMinutes
+    var newHours = this.hour + addedHours
+    while (newMinutes >= 60) {
+      newMinutes -= 60
+      newHours += 1
     }
+    while (newHours >= 24) {
+      newHours -= 24
+    }
+    Time(newHours, newMinutes)
+  }
+
+  def ++(hours: Int): Time = {
+    var newHours = hour + hours
+    while (newHours >= 24) {
+      newHours -= 24
+    }
+    Time(newHours, this.minutes)
+  }
+
+  def <=(time: Time): Boolean =
+    this.hour < time.hour || (this.hour == time.hour && this.minutes <= time.minutes)
+
+
+  def -(time: Time): Duration = {
+    val minutesDiff = if (this.minutes >= time.minutes) this.minutes - time.minutes else (60 - time.minutes) + this.minutes
+    val adjustedTime = time + minutesDiff
+    val hourDiff =
+      if (this.hour < adjustedTime.hour)
+        24 - adjustedTime.hour + this.hour
+      else
+        this.hour - adjustedTime.hour
+    Duration(hourDiff, minutesDiff)
+  }
+
 }
 
 case class Day(name: DayType, times: Seq[Time]) {

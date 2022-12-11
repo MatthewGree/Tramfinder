@@ -1,9 +1,12 @@
 package com.matt.tramfinder.graph
 
+import cats.implicits.catsSyntaxPartialOrder
+import cats.{Monoid, PartialOrder}
 import com.matt.tramfinder.model.DayType.{DayType, Saturday, Sunday, WorkingDay}
 import com.matt.tramfinder.model.Time
 
 import java.time.DayOfWeek._
+import java.time.temporal.ChronoUnit
 import java.time.{Instant, ZoneOffset}
 
 package object routefinder {
@@ -14,9 +17,7 @@ package object routefinder {
 
   private[routefinder] implicit class RichTime(time: Time) {
     def isInRange(hours: Int, time: Time): Boolean =
-      (1 to hours).map(delta => this.time ++ delta).foldLeft(false)((inRange, deltaTime) =>
-        inRange || (time.hour < deltaTime.hour || (time.hour == deltaTime.hour && time.minutes <= deltaTime.minutes))
-      )
+      time - this.time < Duration(hours, 0)
   }
 
   private[routefinder] implicit class RichInstant(instant: Instant) {
@@ -28,6 +29,28 @@ package object routefinder {
       case _ => WorkingDay
     }
 
+    def plus(duration: Duration): Instant =
+      instant.plus(duration.hour.toLong, ChronoUnit.HOURS).plus(duration.minutes.toLong, ChronoUnit.MINUTES)
+
     def getTime: Time = Time(zoned.getHour, zoned.getMinute)
   }
+
+  implicit val durationMonoid: Monoid[Duration] = new Monoid[Duration] {
+    override def empty: Duration = Duration(0, 0)
+
+    override def combine(x: Duration, y: Duration): Duration = {
+      val (additionalHours, newMinutes) = {
+        var newMinutes = x.minutes + y.minutes
+        var addHours = 0
+        while (newMinutes > 60) {
+          newMinutes -= 60
+          addHours += 1
+        }
+        (addHours, newMinutes)
+      }
+      Duration(x.hour + y.hour + additionalHours, newMinutes)
+    }
+  }
+
+  implicit val durationPartialOrder: PartialOrder[Duration] = (x: Duration, y: Duration) => (x.hour, x.minutes).partialCompare((y.hour, y.minutes))
 }
