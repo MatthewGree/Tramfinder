@@ -81,7 +81,6 @@ class ModelXmlReadersTest extends CatsEffectSuite {
   test("Data file is decoded") {
     val xmlFile = loadXml("/000a.xml")
     val file = XmlReader.of[DataFile].read(xmlFile)
-    file.errors.foreach(println)
 
     assertEquals(file.getOrElse(null).lines.length, 1)
   }

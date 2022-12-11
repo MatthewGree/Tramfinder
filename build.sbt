@@ -22,7 +22,8 @@ lazy val root = (project in file("."))
       "ch.qos.logback" % "logback-classic" % LogbackVersion % Runtime,
       "org.scalameta" %% "svm-subs" % "20.2.0",
       "com.lucidchart" %% "xtract" % "2.3.0-alpha3",
-      "com.lucidchart" %% "xtract-testing" % "2.3.0-alpha3" % "test"
+      "com.lucidchart" %% "xtract-testing" % "2.3.0-alpha3" % "test",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
     ),
     addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full),
     addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1"),
@@ -30,6 +31,7 @@ lazy val root = (project in file("."))
     assembly / assemblyMergeStrategy := {
       case PathList("META-INF", _*) => MergeStrategy.discard
       case _ => MergeStrategy.first
-    }
+    },
+    Test / scalacOptions := Seq()
 
   )
