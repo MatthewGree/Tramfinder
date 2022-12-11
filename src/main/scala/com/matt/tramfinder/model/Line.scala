@@ -13,10 +13,40 @@ object DayType extends Enumeration {
   }
 }
 
+private[model] case class IntermediateTime(hour: Int, minutes: Seq[Int])
 
-case class Time(hour: Int, minutes: Int)
+case class Time(hour: Int, minutes: Int) {
+  def +(minutes: Int): Time =
+    {
+      val addedMinutes = minutes % 60
+      val addedHours = minutes / 60
+      var newMinutes = minutes + addedMinutes
+      var newHours = hour + addedHours
+      while (newMinutes >= 60) {
+        newMinutes -= 60
+        newHours += 1
+      }
+      while (newHours >= 24) {
+        newHours -= 24
+      }
+      Time(newHours, newMinutes)
+    }
 
-case class Day(name: DayType, times: Seq[Time])
+  def ++(hours: Int): Time =
+    {
+      var newHours = hour + hours
+      while (newHours >= 24) {
+        newHours -= 24
+      }
+      Time(newHours, this.minutes)
+    }
+}
+
+case class Day(name: DayType, times: Seq[Time]) {
+  def toDayTimes: Seq[DayTime] = times.map(DayTime(name, _))
+}
+
+case class DayTime(day: DayType, time: Time)
 
 case class TimeBoard(id: Int, mc: Int, days: Seq[Day])
 

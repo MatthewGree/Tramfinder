@@ -1,18 +1,27 @@
 package com.matt.tramfinder.model
-import com.lucidchart.open.xtract.{XmlReader, __}
+
 import com.lucidchart.open.xtract.XmlReader._
+import com.lucidchart.open.xtract.{XmlReader, __}
 
 object ModelXmlReaders {
-  implicit val timeReader: XmlReader[Time] =
+
+  private case class Minutes(minutes: Int)
+
+  private implicit val minutesReader: XmlReader[Minutes] =
+    for {
+      minutes <- attribute[Int]("m")
+    } yield Minutes(minutes)
+
+  private[model] implicit val timeReader: XmlReader[IntermediateTime] =
     for {
       hour <- (__ \@ "h").read[Int]
-      minute <- (__ \ "min" \@ "m").read[Int]
-    } yield Time(hour, minute)
+      minutes <- (__ \ "min").read(seq[Minutes]).atLeast(1)
+    } yield IntermediateTime(hour, minutes.map(_.minutes))
 
   implicit val dayReader: XmlReader[Day] =
     for {
       dayType <- (__ \@ "nazwa").read[String].map(DayType.fromString)
-      times <- (__ \ "godz").read(seq[Time])
+      times <- (__ \ "godz").read(seq[IntermediateTime]).map(_.flatMap(time => time.minutes.map(Time(time.hour, _))))
     } yield Day(dayType, times)
 
   implicit val timeBoardReader: XmlReader[TimeBoard] =

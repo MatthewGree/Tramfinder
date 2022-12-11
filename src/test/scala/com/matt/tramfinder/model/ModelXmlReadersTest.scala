@@ -1,5 +1,6 @@
 package com.matt.tramfinder.model
 
+import cats.implicits.catsSyntaxEitherId
 import com.lucidchart.open.xtract.XmlReader
 import com.matt.tramfinder.model.ModelXmlReaders.{dataFileReader, dayReader, lineReader, stopReader, timeBoardReader, timeReader, varianceReader}
 import munit.CatsEffectSuite
@@ -12,11 +13,13 @@ class ModelXmlReadersTest extends CatsEffectSuite {
     val xmlTime = """<godz h="4">
                     |<min m="45">
                     |</min>
+                    |<min m="46">
+                    |</min>
                     |</godz>""".stripMargin
 
-    val time: Time = XmlReader.of[Time].read(XML.loadString(xmlTime)).getOrElse(null)
+    val time = XmlReader.of[IntermediateTime].read(XML.loadString(xmlTime)).fold(_.asLeft[IntermediateTime])(_.asRight)
 
-    assertEquals(time, Time(4, 45))
+    assertEquals(time, IntermediateTime(4, Seq(45, 46)).asRight)
   }
 
   test("day is decoded") {
@@ -29,12 +32,14 @@ class ModelXmlReadersTest extends CatsEffectSuite {
         |      <godz h="5">
         |       <min m="15">
         |       </min>
+        |       <min m="17">
+        |       </min>
         |       </godz>
         |       </dzien>""".stripMargin
 
     val day: Day = XmlReader.of[Day].read(XML.loadString(xmlDay)).getOrElse(null)
 
-    assertEquals(day, Day(DayType.WorkingDay, Seq(Time(4, 45), Time(5, 15))))
+    assertEquals(day, Day(DayType.WorkingDay, Seq(Time(4, 45), Time(5, 15), Time(5, 17))))
   }
 
   test("Time board is decoded") {
@@ -80,6 +85,7 @@ class ModelXmlReadersTest extends CatsEffectSuite {
 
     assertEquals(file.getOrElse(null).lines.length, 1)
   }
+
   private def loadXml(name: String) = XML.load(getClass.getResourceAsStream(name))
 
 }
