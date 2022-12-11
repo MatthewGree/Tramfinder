@@ -6,7 +6,7 @@ import com.matt.tramfinder.model.{Destination, Line, Stop}
 import scala.collection.immutable.HashMap
 import scala.util.chaining.scalaUtilChainingOps
 
-object GraphFactory extends Logging{
+object GraphFactory extends Logging {
 
   private def createEdgesFromStop(nodeMap: HashMap[Int, TramStop], stop: Stop, lineId: LineId): Iterable[(Destination, Edge)] = {
     logger.info(s"Creating edges from stop ${(stop.id, stop.name)}")
@@ -23,8 +23,8 @@ object GraphFactory extends Logging{
       line <- lines
       variance <- line.variances
       stop <- variance.stops
-    } yield createEdgesFromStop(nodeMap, stop, LineId(line.name, variance.id)))
-      .flatten
+      edge <- createEdgesFromStop(nodeMap, stop, LineId(line.name, variance.id))
+    } yield edge)
       .groupBy { case (stop, _) => stop.id }
       .view.mapValues(_.map { case (_, edge) => edge }).toMap
   }

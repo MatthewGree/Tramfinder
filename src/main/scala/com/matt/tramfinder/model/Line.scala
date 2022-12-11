@@ -10,6 +10,8 @@ object DayType extends Enumeration {
   def fromString(string: String): DayType = string match {
     case "Niedziela" => Sunday
     case "Sobota" => Saturday
+    case "pt./ sob." => Saturday
+    case "sob./ niedz." => Sunday
     case _ => WorkingDay
   }
 }
