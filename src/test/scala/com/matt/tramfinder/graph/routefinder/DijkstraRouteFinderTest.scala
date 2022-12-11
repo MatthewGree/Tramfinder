@@ -92,7 +92,7 @@ class DijkstraRouteFinderTest extends FunSuite {
     EdgeInfo(timeCost, time.getTime + timestampOffset, dayType, lineId)
 
   private def createGraph(size: Int)(edges: (Int, Int, EdgeInfo)*) = {
-    val nodeMap = (1 to size).map(id => id -> Node(id, s"stop$id")).toMap
+    val nodeMap = (1 to size).map(id => id -> TramStop(id, s"stop$id")).toMap
     val edgeMap =
       edges.map { case (from, to, info) => (from, Edge(nodeMap(to), info)) }
         .groupBy(_._1)

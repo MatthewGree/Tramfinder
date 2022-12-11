@@ -1,6 +1,6 @@
 package com.matt.tramfinder.graph.routefinder
 
-import com.matt.tramfinder.graph.{Graph, LineId, Node}
+import com.matt.tramfinder.graph.{Graph, LineId, TramStop}
 import com.matt.tramfinder.model.Time
 
 import java.time.Instant
@@ -11,7 +11,7 @@ trait RouteFinder {
 
 case class Duration(hour: Int, minutes: Int)
 
-case class Connection(from: Node, to: Node, startingTime: Time, endingTime: Time, line: LineId)
+case class Connection(from: TramStop, to: TramStop, startingTime: Time, endingTime: Time, line: LineId)
 
 case class Route(connections: List[Connection], duration: Duration)
 

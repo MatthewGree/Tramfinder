@@ -11,8 +11,8 @@ import java.time.{Instant, ZoneOffset}
 
 package object routefinder {
   private[routefinder] implicit class RichGraph(graph: Graph) {
-    def getNodeEither(nodeId: Int): Either[StopNotFound, Node] =
-      graph.getNode(nodeId).toRight(StopNotFound(nodeId))
+    def getStopEither(stopId: Int): Either[StopNotFound, TramStop] =
+      graph.getStop(stopId).toRight(StopNotFound(stopId))
   }
 
   private[routefinder] implicit class RichTime(time: Time) {

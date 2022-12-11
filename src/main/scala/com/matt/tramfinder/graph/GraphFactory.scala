@@ -7,12 +7,12 @@ import scala.util.chaining.scalaUtilChainingOps
 
 object GraphFactory {
 
-  private def createEdgesFromStop(nodeMap: HashMap[Int, Node], stop: Stop, lineId: LineId): Seq[Edge] =
+  private def createEdgesFromStop(nodeMap: HashMap[Int, TramStop], stop: Stop, lineId: LineId): Seq[Edge] =
     stop.board.map(_.days.map(_.toDayTimes).zip(stop.times).flatMap { case (dayTimes, dest) =>
       dayTimes.map(dayTime => Edge(nodeMap(dest.id), EdgeInfo(dest.time, dayTime.time + dest.time, dayTime.day, lineId)))
     }).getOrElse(Seq.empty)
 
-  private def createEdges(nodeMap: HashMap[Int, Node], lines: Iterable[Line]): Map[Int, Seq[Edge]] =
+  private def createEdges(nodeMap: HashMap[Int, TramStop], lines: Iterable[Line]): Map[Int, Seq[Edge]] =
     lines.flatMap(line =>
       line.variances.flatMap(variance =>
         variance.stops.map(
@@ -24,7 +24,7 @@ object GraphFactory {
 
   def fromLines(lines: Iterable[Line]): Graph = {
     val nodeMap = getStops(lines)
-      .foldLeft(HashMap.empty[Int, Node])((map, node) =>
+      .foldLeft(HashMap.empty[Int, TramStop])((map, node) =>
         map + (node.id -> node)
       )
       .pipe(map => map ++ getMissingStopsFromDestinations(lines, map).map(node => node.id -> node))
@@ -34,15 +34,15 @@ object GraphFactory {
     Graph(nodeMap, edges)
   }
 
-  private def getStops(lines: Iterable[Line]): Iterable[Node] =
+  private def getStops(lines: Iterable[Line]): Iterable[TramStop] =
     lines
       .flatMap(
         _.variances.flatMap(
-          _.stops.map(stop => Node(stop.id, stop.name))
+          _.stops.map(stop => TramStop(stop.id, stop.name))
         )
       )
 
-  private def getMissingStopsFromDestinations(lines: Iterable[Line], map: Map[Int, _]): Iterable[Node] =
+  private def getMissingStopsFromDestinations(lines: Iterable[Line], map: Map[Int, _]): Iterable[TramStop] =
     lines.flatMap(
       _.variances.flatMap(
         _.stops.flatMap(
@@ -50,7 +50,7 @@ object GraphFactory {
             dest => if (map.contains(dest.id)) {
               None
             } else {
-              Some(Node(dest.id, dest.name))
+              Some(TramStop(dest.id, dest.name))
             }
           )
         )

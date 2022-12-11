@@ -1,7 +1,7 @@
 package com.matt.tramfinder.graph.routefinder
 
 import cats.implicits.{catsSyntaxOptionId, catsSyntaxOrder, catsSyntaxPartialOrder, catsSyntaxSemigroup}
-import com.matt.tramfinder.graph.{Graph, LineId, Node}
+import com.matt.tramfinder.graph.{Graph, LineId, TramStop}
 
 import java.time.Instant
 import scala.collection.mutable
@@ -9,71 +9,71 @@ import scala.util.control.Breaks.{break, breakable}
 
 class DijkstraRouteFinder extends RouteFinder {
 
-  private case class NodeDistanced(node: Node, duration: Duration, lineId: LineId)
+  private case class StopReached(stop: TramStop, duration: Duration, lineId: LineId)
 
-  private implicit val nodeOrdering: Ordering[NodeDistanced] =
-    (x: NodeDistanced, y: NodeDistanced) => (y.duration.hour, y.duration.minutes).compare((x.duration.hour, x.duration.minutes))
+  private implicit val stopOrdering: Ordering[StopReached] =
+    (x: StopReached, y: StopReached) => (y.duration.hour, y.duration.minutes).compare((x.duration.hour, x.duration.minutes))
 
 
   override def findBestRoute(graph: Graph, start: Int, end: Int, time: Instant): Either[RouteError, Route] = {
     for {
-      startNode <- graph.getNodeEither(start)
-      endNode <- graph.getNodeEither(end)
-      route <- calculateShortestRoute(startNode, endNode, graph, time)
+      startStop <- graph.getStopEither(start)
+      endStop <- graph.getStopEither(end)
+      route <- calculateShortestRoute(startStop, endStop, graph, time)
     } yield route
   }
 
-  private def calculateShortestRoute(startNode: Node, endNode: Node, graph: Graph, time: Instant): Either[RouteError, Route] = {
-    val durations = new mutable.HashMap[Node, Duration]()
-    val prev = new mutable.HashMap[Node, Connection]()
+  private def calculateShortestRoute(startStop: TramStop, endStop: TramStop, graph: Graph, time: Instant): Either[RouteError, Route] = {
+    val durations = new mutable.HashMap[TramStop, Duration]()
+    val prev = new mutable.HashMap[TramStop, Connection]()
 
-    val queue = new mutable.PriorityQueue[NodeDistanced]()
-    graph.getAllNodes.foreach(node =>
-      if (node.id != startNode.id) {
-        durations.addOne(node -> Duration(Int.MaxValue, Int.MaxValue))
+    val queue = new mutable.PriorityQueue[StopReached]()
+    graph.getAllStops.foreach(stop =>
+      if (stop.id != startStop.id) {
+        durations.addOne(stop -> Duration(Int.MaxValue, Int.MaxValue))
       }
     )
-    queue.addOne(NodeDistanced(startNode, Duration(0, 0), LineId("", 0)))
-    durations.addOne(startNode -> Duration(0, 0))
+    queue.addOne(StopReached(startStop, Duration(0, 0), LineId("", 0)))
+    durations.addOne(startStop -> Duration(0, 0))
 
     whileContinuable(queue.nonEmpty) {
-      val nodeWithDistance = queue.dequeue()
-      if (nodeWithDistance.duration != durations(nodeWithDistance.node)) {
+      val stopReached = queue.dequeue()
+      if (stopReached.duration != durations(stopReached.stop)) {
         break()
       }
-      val nodeInstant = time.plus(nodeWithDistance.duration)
-      graph.getNodeEdges(nodeWithDistance.node)
+      val stopInstant = time.plus(stopReached.duration)
+      graph.getStopEdges(stopReached.stop)
         .filter(edge =>
-          nodeInstant.getTime.isInRange(5, edge.info.time) &&
-            nodeInstant.getDayType == edge.info.dayType
+          stopInstant.getTime.isInRange(5, edge.info.time) &&
+            stopInstant.getDayType == edge.info.dayType
         )
         .foreach { edge =>
           val newDuration =
-            durations(nodeWithDistance.node) combine
+            durations(stopReached.stop) combine
               Duration(0, edge.info.timeCost) combine
-              (edge.info.time - nodeInstant.getTime) combine
-              (if (edge.info.lineId != nodeWithDistance.lineId) Duration(0, 5) else Duration(0, 0))
-          if (newDuration < durations(edge.node)) {
-            durations.update(edge.node, newDuration)
-            prev.update(edge.node, Connection(nodeWithDistance.node, edge.node, edge.info.time, edge.info.time + edge.info.timeCost, edge.info.lineId))
-            queue.addOne(NodeDistanced(edge.node, newDuration, edge.info.lineId))
+              (edge.info.time - stopInstant.getTime) combine
+              (if (edge.info.lineId != stopReached.lineId) Duration(0, 5) else Duration(0, 0))
+          if (newDuration < durations(edge.stop)) {
+            durations.update(edge.stop, newDuration)
+            prev.update(edge.stop, Connection(stopReached.stop, edge.stop, edge.info.time, edge.info.time + edge.info.timeCost, edge.info.lineId))
+            queue.addOne(StopReached(edge.stop, newDuration, edge.info.lineId))
           }
         }
     }
 
-    extractConnections(prev, startNode, endNode)
-      .map(connections => Route(connections, durations(endNode))) match {
+    extractConnections(prev, startStop, endStop)
+      .flatMap(connections => durations.get(endStop).map(Route(connections, _))) match {
       case Some(route) => Right(route)
-      case None => Left(RouteNotFound(startNode.id, endNode.id))
+      case None => Left(RouteNotFound(startStop.id, endStop.id))
     }
   }
 
-  private def extractConnections(prev: mutable.Map[Node, Connection], startNode: Node, endNode: Node): Option[List[Connection]] =
-    prev.get(endNode).flatMap { connection =>
-      if (connection.from == startNode) {
+  private def extractConnections(prev: mutable.Map[TramStop, Connection], startStop: TramStop, endStop: TramStop): Option[List[Connection]] =
+    prev.get(endStop).flatMap { connection =>
+      if (connection.from == startStop) {
         List(connection).some
       } else {
-        extractConnections(prev, startNode, connection.from).map(_.appended(connection))
+        extractConnections(prev, startStop, connection.from).map(_.appended(connection))
       }
     }
 
