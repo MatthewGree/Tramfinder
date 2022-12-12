@@ -11,7 +11,7 @@ import com.matt.tramfinder.service.TramfinderService
 import fs2.Stream
 import fs2.io.net.tls.TLSContext
 import org.http4s.ember.server.EmberServerBuilder
-import org.http4s.server.middleware.Logger
+import org.http4s.server.middleware.{CORS, CORSPolicy, Logger}
 
 import scala.util.chaining.scalaUtilChainingOps
 
@@ -26,6 +26,7 @@ class TramfinderServer(repository: Repository, ip: String, port: String) {
         .routes
         .orNotFound
         .pipe(Logger.httpApp(true, true))
+        .pipe(CORS.policy.httpApp)
 
     for {
       context <- Stream.resource(Resource.eval(tlsContext))

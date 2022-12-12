@@ -10,5 +10,5 @@ RUN mkdir ./data
 RUN unzip ./XML-rozkladyjazdy.zip -d ./data
 RUN find ./data/ -mindepth 2 -type f -exec mv '{}' ./data \;
 RUN find ./data -type d -empty -delete
-CMD sbt 'run ./data 0.0.0.0 8080'
-EXPOSE 8080
+CMD sbt 'run ./data 0.0.0.0 80'
+EXPOSE 80
