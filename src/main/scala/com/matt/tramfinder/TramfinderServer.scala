@@ -9,6 +9,7 @@ import com.matt.tramfinder.repository.Repository
 import com.matt.tramfinder.routes.TramfinderRoutes
 import com.matt.tramfinder.service.TramfinderService
 import fs2.Stream
+import fs2.io.net.tls.TLSContext
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.middleware.Logger
 
@@ -19,6 +20,7 @@ class TramfinderServer(repository: Repository, ip: String, port: String) {
     val graph = GraphFactory.fromLines(repository.getAllLines)
     val service = new TramfinderService(graph, new DijkstraRouteFinder)
     val tramRoutes = new TramfinderRoutes[F](service)
+    val tlsContext = TLSContext.Builder.forAsync[F].fromKeyStoreResource("certs/store.keystore", "cert1cert1".toCharArray, "cert1".toCharArray)
     val httpApp =
       tramRoutes
         .routes
@@ -26,11 +28,13 @@ class TramfinderServer(repository: Repository, ip: String, port: String) {
         .pipe(Logger.httpApp(true, true))
 
     for {
+      context <- Stream.resource(Resource.eval(tlsContext))
       exitCode <- Stream.resource(
         EmberServerBuilder.default[F]
           .withHost(Ipv4Address.fromString(ip).get)
           .withPort(Port.fromString(port).get)
           .withHttpApp(httpApp)
+          .withTLS(context)
           .build >>
           Resource.eval(Async[F].never)
       )
