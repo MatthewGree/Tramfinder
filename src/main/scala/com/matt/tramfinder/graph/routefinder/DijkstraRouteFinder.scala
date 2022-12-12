@@ -12,7 +12,7 @@ class DijkstraRouteFinder extends RouteFinder {
   private case class StopReached(stop: TramStop, duration: Duration, lineId: LineId)
 
   private implicit val stopOrdering: Ordering[StopReached] =
-    (x: StopReached, y: StopReached) => (y.duration.hour, y.duration.minutes).compare((x.duration.hour, x.duration.minutes))
+    (x: StopReached, y: StopReached) => (y.duration.hours, y.duration.minutes).compare((x.duration.hours, x.duration.minutes))
 
 
   override def findBestRoute(graph: Graph, start: Int, end: Int, time: Instant): Either[RouteError, Route] = {

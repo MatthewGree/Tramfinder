@@ -30,7 +30,7 @@ package object routefinder {
     }
 
     def plus(duration: Duration): Instant =
-      instant.plus(duration.hour.toLong, ChronoUnit.HOURS).plus(duration.minutes.toLong, ChronoUnit.MINUTES)
+      instant.plus(duration.hours.toLong, ChronoUnit.HOURS).plus(duration.minutes.toLong, ChronoUnit.MINUTES)
 
     def getTime: Time = Time(zoned.getHour, zoned.getMinute)
   }
@@ -48,9 +48,9 @@ package object routefinder {
         }
         (addHours, newMinutes)
       }
-      Duration(x.hour + y.hour + additionalHours, newMinutes)
+      Duration(x.hours + y.hours + additionalHours, newMinutes)
     }
   }
 
-  implicit val durationPartialOrder: PartialOrder[Duration] = (x: Duration, y: Duration) => (x.hour, x.minutes).partialCompare((y.hour, y.minutes))
+  implicit val durationPartialOrder: PartialOrder[Duration] = (x: Duration, y: Duration) => (x.hours, x.minutes).partialCompare((y.hours, y.minutes))
 }

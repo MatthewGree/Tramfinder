@@ -9,7 +9,7 @@ trait RouteFinder {
   def findBestRoute(graph: Graph, start: Int, end: Int, time: Instant): Either[RouteError, Route]
 }
 
-case class Duration(hour: Int, minutes: Int)
+case class Duration(hours: Int, minutes: Int)
 
 case class Connection(from: TramStop, to: TramStop, startingTime: Time, endingTime: Time, line: LineId)
 
