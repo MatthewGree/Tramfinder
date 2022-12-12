@@ -14,7 +14,7 @@ import org.http4s.server.middleware.Logger
 
 import scala.util.chaining.scalaUtilChainingOps
 
-class TramfinderServer(repository: Repository) {
+class TramfinderServer(repository: Repository, ip: String, port: String) {
   def stream[F[_] : Async]: Stream[F, Nothing] = {
 
     val graph = GraphFactory.fromLines(repository.getAllLines)
@@ -29,8 +29,8 @@ class TramfinderServer(repository: Repository) {
     for {
       exitCode <- Stream.resource(
         EmberServerBuilder.default[F]
-          .withHost(ipv4"0.0.0.0")
-          .withPort(port"8080")
+          .withHost(ipv4"$ip")
+          .withPort(port"$port")
           .withHttpApp(httpApp)
           .build >>
           Resource.eval(Async[F].never)
