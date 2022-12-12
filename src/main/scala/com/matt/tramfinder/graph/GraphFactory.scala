@@ -8,17 +8,17 @@ import scala.util.chaining.scalaUtilChainingOps
 
 object GraphFactory extends Logging {
 
-  private def createEdgesFromStop(nodeMap: HashMap[Int, TramStop], stop: Stop, lineId: LineId): Iterable[(Destination, Edge)] = {
+  private def createEdgesFromStop(nodeMap: HashMap[String, TramStop], stop: Stop, lineId: LineId): Iterable[(Destination, Edge)] = {
     logger.info(s"Creating edges from stop ${(stop.id, stop.name)}")
     for {
       board <- stop.board.toList
       day <- board.days
       dayTime <- day.toDayTimes
       List(start, target) <- stop.times.sliding(2)
-    } yield (start, Edge(nodeMap(target.id), EdgeInfo(target.time - start.time, dayTime.time + start.time, dayTime.day, lineId)))
+    } yield (start, Edge(nodeMap(target.name), EdgeInfo(target.time - start.time, dayTime.time + start.time, dayTime.day, lineId)))
   }
 
-  private def createEdges(nodeMap: HashMap[Int, TramStop], lines: Iterable[Line]): Map[Int, Iterable[Edge]] = {
+  private def createEdges(nodeMap: HashMap[String, TramStop], lines: Iterable[Line]): Map[Int, Iterable[Edge]] = {
     (for {
       line <- lines
       variance <- line.variances
@@ -32,14 +32,14 @@ object GraphFactory extends Logging {
 
   def fromLines(lines: Iterable[Line]): Graph = {
     val nodeMap = getStops(lines)
-      .foldLeft(HashMap.empty[Int, TramStop])((map, node) =>
-        map + (node.id -> node)
+      .foldLeft(HashMap.empty[String, TramStop])((map, node) =>
+        map + (node.name -> node)
       )
-      .pipe(map => map ++ getMissingStopsFromDestinations(lines, map).map(node => node.id -> node))
+      .pipe(map => map ++ getMissingStopsFromDestinations(lines, map).map(node => node.name -> node))
 
     val edges = createEdges(nodeMap, lines)
 
-    Graph(nodeMap, edges)
+    Graph(nodeMap.map{case (_, edge) => (edge.id, edge)}, edges)
   }
 
   private def getStops(lines: Iterable[Line]): Iterable[TramStop] =
@@ -50,12 +50,12 @@ object GraphFactory extends Logging {
     } yield TramStop(stop.id, stop.name)
 
 
-  private def getMissingStopsFromDestinations(lines: Iterable[Line], map: Map[Int, _]): Iterable[TramStop] =
+  private def getMissingStopsFromDestinations(lines: Iterable[Line], map: Map[String, _]): Iterable[TramStop] =
     (for {
       line <- lines
       variance <- line.variances
       stop <- variance.stops
       dest <- stop.times
-    } yield if (map.contains(dest.id)) None else Some(TramStop(dest.id, dest.name))).flatten
+    } yield if (map.contains(dest.name)) None else Some(TramStop(dest.id, dest.name))).flatten
 
 }
