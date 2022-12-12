@@ -16,7 +16,6 @@ import scala.util.chaining.scalaUtilChainingOps
 
 class TramfinderServer(repository: Repository, ip: String, port: String) {
   def stream[F[_] : Async]: Stream[F, Nothing] = {
-
     val graph = GraphFactory.fromLines(repository.getAllLines)
     val service = new TramfinderService(graph, new DijkstraRouteFinder)
     val tramRoutes = new TramfinderRoutes[F](service)
@@ -29,8 +28,8 @@ class TramfinderServer(repository: Repository, ip: String, port: String) {
     for {
       exitCode <- Stream.resource(
         EmberServerBuilder.default[F]
-          .withHost(ipv4"$ip")
-          .withPort(port"$port")
+          .withHost(Ipv4Address.fromString(ip).get)
+          .withPort(Port.fromString(port).get)
           .withHttpApp(httpApp)
           .build >>
           Resource.eval(Async[F].never)
