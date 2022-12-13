@@ -8,14 +8,14 @@ import scala.util.chaining.scalaUtilChainingOps
 
 object GraphFactory extends Logging {
 
-  private def createEdgesFromStop(nodeMap: HashMap[String, TramStop], stop: Stop, lineId: LineId): Iterable[(Destination, Edge)] = {
+  private def createEdgesFromStop(nodeMap: HashMap[String, TramStop], stop: Stop, lineId: LineId): Iterable[(TramStop, Edge)] = {
     logger.info(s"Creating edges from stop ${(stop.id, stop.name)}")
     for {
       board <- stop.board.toList
       day <- board.days
       dayTime <- day.toDayTimes
       List(start, target) <- stop.times.sliding(2)
-    } yield (start, Edge(nodeMap(target.name), EdgeInfo(target.time - start.time, dayTime.time + start.time, dayTime.day, lineId)))
+    } yield (nodeMap(start.name), Edge(nodeMap(target.name), EdgeInfo(target.time - start.time, dayTime.time + start.time, dayTime.day, lineId)))
   }
 
   private def createEdges(nodeMap: HashMap[String, TramStop], lines: Iterable[Line]): Map[Int, Iterable[Edge]] = {
