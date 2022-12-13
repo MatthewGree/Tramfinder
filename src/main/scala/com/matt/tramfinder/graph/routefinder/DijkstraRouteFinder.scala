@@ -36,8 +36,13 @@ class DijkstraRouteFinder extends RouteFinder {
     queue.addOne(StopReached(startStop, Duration(0, 0), LineId("", 0)))
     durations.addOne(startStop -> Duration(0, 0))
 
-    whileContinuable(queue.nonEmpty) {
+    var targetNotFound = true
+    whileContinuable(queue.nonEmpty && targetNotFound) {
       val stopReached = queue.dequeue()
+      if (stopReached.stop.id == endStop.id) {
+        targetNotFound = false
+        break()
+      }
       if (stopReached.duration != durations(stopReached.stop)) {
         break()
       }
