@@ -4,6 +4,7 @@ import cats.implicits.{catsSyntaxOptionId, catsSyntaxOrder, catsSyntaxPartialOrd
 import com.matt.tramfinder.graph.{Graph, LineId, TramStop}
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import scala.collection.mutable
 import scala.util.control.Breaks.{break, breakable}
 
@@ -23,7 +24,7 @@ class DijkstraRouteFinder extends RouteFinder {
     } yield route
   }
 
-  private def calculateShortestRoute(startStop: TramStop, endStop: TramStop, graph: Graph, time: Instant): Either[RouteError, Route] = {
+  private def calculateShortestRoute(startStop: TramStop, endStop: TramStop, graph: Graph, time: Instant): Either[RouteNotFound, Route] = {
     val durations = new mutable.HashMap[TramStop, Duration]()
     val prev = new mutable.HashMap[TramStop, Connection]()
 
@@ -48,22 +49,22 @@ class DijkstraRouteFinder extends RouteFinder {
       }
       val stopInstant = time.plus(stopReached.duration)
       graph.getStopEdges(stopReached.stop)
-        .filter(edge =>
-          stopInstant.getTime.isInRange(5, edge.info.time) &&
-            stopInstant.getDayType == edge.info.dayType
-        )
-        .foreach { edge =>
-          val newDuration =
-            durations(stopReached.stop) combine
-              Duration(0, edge.info.timeCost) combine
-              (edge.info.time - stopInstant.getTime) combine
-              (if (edge.info.lineId != stopReached.lineId) Duration(0, 5) else Duration(0, 0))
-          if (newDuration < durations(edge.stop)) {
-            durations.update(edge.stop, newDuration)
-            prev.update(edge.stop, Connection(stopReached.stop, edge.stop, edge.info.time, edge.info.time + edge.info.timeCost, edge.info.lineId))
-            queue.addOne(StopReached(edge.stop, newDuration, edge.info.lineId))
-          }
+        .filter(edge => {
+          val timeWhenReady = stopInstant.plus((if (stopReached.lineId != edge.info.lineId) 5 else 0), ChronoUnit.MINUTES)
+          timeWhenReady.getTime.isInRange(3, edge.info.time) &&
+            timeWhenReady.getDayType == edge.info.dayType
+        }).foreach { edge =>
+        val newDuration =
+          durations(stopReached.stop) combine
+            Duration(0, edge.info.timeCost) combine
+            (edge.info.time - stopInstant.getTime) combine
+            (if (edge.info.lineId != stopReached.lineId) Duration(0, 5) else Duration(0, 0))
+        if (newDuration < durations(edge.stop)) {
+          durations.update(edge.stop, newDuration)
+          prev.update(edge.stop, Connection(stopReached.stop, edge.stop, edge.info.time, edge.info.time + edge.info.timeCost, edge.info.lineId))
+          queue.addOne(StopReached(edge.stop, newDuration, edge.info.lineId))
         }
+      }
     }
 
     extractConnections(prev, startStop, endStop)
