@@ -55,10 +55,9 @@ class DijkstraRouteFinder extends RouteFinder {
             timeWhenReady.getDayType == edge.info.dayType
         }).foreach { edge =>
         val newDuration =
-          durations(stopReached.stop) combine
+          stopReached.duration combine
             Duration(0, edge.info.timeCost) combine
-            (edge.info.time - stopInstant.getTime) combine
-            (if (edge.info.lineId != stopReached.lineId) Duration(0, 5) else Duration(0, 0))
+            (edge.info.time - stopInstant.getTime)
         if (newDuration < durations(edge.stop)) {
           durations.update(edge.stop, newDuration)
           prev.update(edge.stop, Connection(stopReached.stop, edge.stop, edge.info.time, edge.info.time + edge.info.timeCost, edge.info.lineId))
