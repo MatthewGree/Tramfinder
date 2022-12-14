@@ -3,7 +3,7 @@ package com.matt.tramfinder.model
 import com.lucidchart.open.xtract.XmlReader._
 import com.lucidchart.open.xtract.{XmlReader, __}
 
-object ModelXmlReaders {
+object ModelXmlReader {
 
   private case class Minutes(minutes: Int)
 

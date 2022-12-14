@@ -2,7 +2,7 @@ package com.matt.tramfinder.repository
 
 import cats.implicits.toTraverseOps
 import com.lucidchart.open.xtract.{ParseError, XmlReader}
-import com.matt.tramfinder.model.ModelXmlReaders.dataFileReader
+import com.matt.tramfinder.model.ModelXmlReader.dataFileReader
 import com.matt.tramfinder.model.{DataFile, Line}
 
 import java.io.File

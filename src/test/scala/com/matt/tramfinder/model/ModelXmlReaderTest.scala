@@ -2,12 +2,12 @@ package com.matt.tramfinder.model
 
 import cats.implicits.catsSyntaxEitherId
 import com.lucidchart.open.xtract.XmlReader
-import com.matt.tramfinder.model.ModelXmlReaders.{dataFileReader, dayReader, lineReader, stopReader, timeBoardReader, timeReader, varianceReader}
+import com.matt.tramfinder.model.ModelXmlReader.{dataFileReader, dayReader, lineReader, stopReader, timeBoardReader, timeReader, varianceReader}
 import munit.CatsEffectSuite
 
 import scala.xml.XML
 
-class ModelXmlReadersTest extends CatsEffectSuite {
+class ModelXmlReaderTest extends CatsEffectSuite {
 
   test("time is decoded") {
     val xmlTime = """<godz h="4">
