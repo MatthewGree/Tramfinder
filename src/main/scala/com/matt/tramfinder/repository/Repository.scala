@@ -22,9 +22,8 @@ object Repository {
   def loadFromXml(xmlElems: List[Elem]): Either[Seq[ParseError], Repository] =
     xmlElems
       .map(XmlReader.of[DataFile].read)
-      .map(_.map(_.lines))
       .sequence
-      .map(_.flatten)
+      .map(_.flatMap(_.lines))
       .map(_.foldLeft(HashMap.empty[String, Line])((db, line) => db + (line.name -> line)))
       .map(new Repository(_))
       .fold[Either[Seq[ParseError], Repository]](Left(_))(Right(_))
